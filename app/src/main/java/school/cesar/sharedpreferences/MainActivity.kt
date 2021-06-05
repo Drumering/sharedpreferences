@@ -11,16 +11,22 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.PreferenceManager
 import school.cesar.sharedpreferences.databinding.ActivityMainBinding
+import java.io.File
+import java.io.FileOutputStream
 
 class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceChangeListener {
 
     private lateinit var binding : ActivityMainBinding
+    private lateinit var editor: SharedPreferences.Editor
+    private val file by lazy{
+        File(filesDir, "logs.txt")
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        file.createNewFile()
     }
 
     override fun onResume() {
@@ -34,22 +40,16 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
         sharedPreferences.registerOnSharedPreferenceChangeListener(this)
     }
 
-    class SettingsFragment : PreferenceFragmentCompat(), Preference.OnPreferenceChangeListener {
+    class SettingsFragment : PreferenceFragmentCompat() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.pref_screen, rootKey)
-            val cbPref = findPreference<CheckBoxPreference>("preference_key")
-            cbPref?.let {
-                it.onPreferenceChangeListener = this
-            }
-        }
-
-        override fun onPreferenceChange(preference: Preference?, newValue: Any?): Boolean {
-            Toast.makeText(context, "Value $newValue", Toast.LENGTH_SHORT).show()
-            return true
         }
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
-        Toast.makeText(this, "Pref: $sharedPreferences - Value: ${sharedPreferences?.getBoolean(key, false)}", Toast.LENGTH_SHORT).show()
+        val outputStream = FileOutputStream(file)
+        outputStream.use {
+            it.write("Pref: $key : ${sharedPreferences?.getBoolean(key, false)}".toByteArray())
+        }
     }
 }

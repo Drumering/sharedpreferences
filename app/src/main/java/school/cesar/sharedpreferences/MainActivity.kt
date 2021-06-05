@@ -49,7 +49,10 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
         val outputStream = FileOutputStream(file, true)
         outputStream.use {
-            it.write("Pref: $key : ${sharedPreferences?.getBoolean(key, false)}\n".toByteArray())
+            when(key) {
+                "checkbox_key, switch_key" -> it.write("Pref: $key : ${sharedPreferences?.getBoolean(key, false)}\n".toByteArray())
+                "seekbar_key" -> it.write("Pref: $key : ${sharedPreferences?.getInt(key, 5)}\n".toByteArray())
+            }
         }
     }
 }

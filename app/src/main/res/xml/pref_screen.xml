@@ -1,13 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
-    <CheckBoxPreference
-        android:key="checkbox_key"
-        android:title="@string/preference_title"
-        android:summary="@string/preference_summary" />
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <SwitchPreference
+    <PreferenceCategory
+        android:title="Widgets"
+        app:initialExpandedChildrenCount="1">
 
-        android:key="switch_key"
-        android:title="@string/preference_title2"
-        android:summary="@string/preference_summary" />
+        <CheckBoxPreference
+            android:key="checkbox_key"
+            android:title="@string/preference_title"
+            android:summary="@string/preference_summary" />
+
+        <SwitchPreference
+            android:key="switch_key"
+            android:title="@string/preference_title2"
+            android:summary="@string/preference_summary" />
+
+        <SeekBarPreference
+            android:key="seekbar_key"
+            android:title="Seek bar"
+            android:max="10"
+            android:defaultValue="5" />
+
+    </PreferenceCategory>
+
+    <ListPreference
+        android:key="list_key"
+        android:title="Some list"
+        app:useSimpleSummaryProvider="true"
+        android:entries="@array/items"
+        android:entryValues="@array/item_values" />
+
 </PreferenceScreen>

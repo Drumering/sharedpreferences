@@ -47,9 +47,9 @@ class MainActivity : AppCompatActivity(), SharedPreferences.OnSharedPreferenceCh
     }
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences?, key: String?) {
-        val outputStream = FileOutputStream(file)
+        val outputStream = FileOutputStream(file, true)
         outputStream.use {
-            it.write("Pref: $key : ${sharedPreferences?.getBoolean(key, false)}".toByteArray())
+            it.write("Pref: $key : ${sharedPreferences?.getBoolean(key, false)}\n".toByteArray())
         }
     }
 }
